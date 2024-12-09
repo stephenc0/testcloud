@@ -15,10 +15,11 @@ ENV VARIANCE=0.1
 ENV SUCCESS_ENDPOINT=/success
 ENV FAIL_ENDPOINT=/fail
 
-CMD python load_tester.py \
-    --base-url $BASE_URL \
-    --success-rate $SUCCESS_RATE \
-    --requests-per-second $REQUESTS_PER_SECOND \
-    --variance $VARIANCE \
-    --success-endpoint $SUCCESS_ENDPOINT \
-    --fail-endpoint $FAIL_ENDPOINT
+ENTRYPOINT ["python"]
+CMD ["load_tester.py", \
+     "--base-url", "$BASE_URL", \
+     "--success-rate", "$SUCCESS_RATE", \
+     "--requests-per-second", "$REQUESTS_PER_SECOND", \
+     "--variance", "$VARIANCE", \
+     "--success-endpoint", "$SUCCESS_ENDPOINT", \
+     "--fail-endpoint", "$FAIL_ENDPOINT"]

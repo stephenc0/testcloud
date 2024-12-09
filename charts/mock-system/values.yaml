@@ -2,8 +2,8 @@ namespace: mockapp
 
 mockapi:
   image:
-    repository: stephencarnold/testapi
-    tag: latest
+    repository: stephencarnold/testcloudapi
+    tag: latest-amd64
   replicas: 2
   resources:
     requests:
@@ -22,7 +22,7 @@ mockapi:
 
 mockclient:
   image:
-    repository: stephencarnold/testclient
+    repository: stephencarnold/testcloudclient
     tag: latest
   replicas: 2
   resources:

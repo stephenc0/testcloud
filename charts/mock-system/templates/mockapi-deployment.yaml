@@ -21,8 +21,15 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 8082
-        command: ["python", "-m"]
-        args: ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8082"]
+        command:
+          - "python"
+          - "-m"
+          - "uvicorn"
+          - "app:app"
+          - "--host"
+          - "0.0.0.0"
+          - "--port"
+          - "8082"
         resources:
           requests:
             cpu: 50m

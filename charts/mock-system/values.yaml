@@ -1,3 +1,5 @@
+namespace: mockapp
+
 mockapi:
   image:
     repository: stephencarnold/testcloudapi

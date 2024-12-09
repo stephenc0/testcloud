@@ -5,9 +5,6 @@ COPY load_tester.py .
 
 RUN pip install aiohttp numpy
 
-ENV TZ=America/New_York
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
 ENV BASE_URL=http://myfakeapi:8082
 ENV SUCCESS_RATE=95
 ENV REQUESTS_PER_SECOND=10
@@ -23,3 +20,5 @@ CMD ["load_tester.py", \
      "--variance", "$VARIANCE", \
      "--success-endpoint", "$SUCCESS_ENDPOINT", \
      "--fail-endpoint", "$FAIL_ENDPOINT"]
+
+

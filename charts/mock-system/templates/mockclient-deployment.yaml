@@ -15,6 +15,7 @@ spec:
       labels:
         app: mockclient
     spec:
+      dnsPolicy: ClusterFirst
       {{- with .Values.mockclient.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -26,6 +27,7 @@ spec:
       containers:
       - name: mockclient
         image: "{{ .Values.mockclient.image.repository }}:{{ .Values.mockclient.image.tag }}"
+        imagePullPolicy: Always
         resources:
           {{- toYaml .Values.mockclient.resources | nindent 10 }}
         env:

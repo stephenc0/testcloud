@@ -1,0 +1,42 @@
+namespace: mockapp
+
+mockapi:
+  image:
+    repository: stephencarnold/testapi
+    tag: latest
+  replicas: 2
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+  nodeSelector: {}
+  tolerations: []
+  service:
+    port: 8082
+  env:
+    baseLatency: 0.042
+
+mockclient:
+  image:
+    repository: stephencarnold/testclient
+    tag: latest
+  replicas: 2
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+  nodeSelector: {}
+  tolerations: []
+
+  env:
+    successRate: "95"
+    requestsPerSecond: "100"
+    variance: "0.5"
+    dayLoadFactor: "0.8"
+    weekLoadFactor: "0"

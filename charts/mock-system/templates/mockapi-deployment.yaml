@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mockapi
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "mock-system.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.mockapi.replicas }}
+  selector:
+    matchLabels:
+      app: mockapi
+  template:
+    metadata:
+      labels:
+        app: mockapi
+    spec:
+      {{- with .Values.mockapi.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.mockapi.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+      - name: mockapi
+        image: "{{ .Values.mockapi.image.repository }}:{{ .Values.mockapi.image.tag }}"
+        ports:
+        - containerPort: {{ .Values.mockapi.service.port }}
+        command: ["/bin/sh", "-c"]
+        args: ["uvicorn app:app --host 0.0.0.0 --port {{ .Values.mockapi.service.port }}"]
+        resources:
+          {{- toYaml .Values.mockapi.resources | nindent 10 }}
+        env:
+        - name: BASE_LATENCY
+          value: "{{ .Values.mockapi.env.baseLatency }}"
+        livenessProbe:
+          exec:
+            command:
+            - curl
+            - -f
+            - http://localhost:{{ .Values.mockapi.service.port }}/success
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3

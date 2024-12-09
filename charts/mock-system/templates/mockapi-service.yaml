@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mockapi
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "mock-system.labels" . | nindent 4 }}
+spec:
+  selector:
+    app: mockapi
+  ports:
+  - port: {{ .Values.mockapi.service.port }}
+    targetPort: {{ .Values.mockapi.service.port }}
+  type: ClusterIP

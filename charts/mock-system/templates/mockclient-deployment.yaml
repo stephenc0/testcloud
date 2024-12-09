@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mockclient
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "mock-system.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.mockclient.replicas }}
+  selector:
+    matchLabels:
+      app: mockclient
+  template:
+    metadata:
+      labels:
+        app: mockclient
+    spec:
+      {{- with .Values.mockclient.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.mockclient.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+      - name: mockclient
+        image: "{{ .Values.mockclient.image.repository }}:{{ .Values.mockclient.image.tag }}"
+        resources:
+          {{- toYaml .Values.mockclient.resources | nindent 10 }}
+        env:
+        - name: BASE_URL
+          value: "http://mockapi:{{ .Values.mockapi.service.port }}"
+        - name: SUCCESS_RATE
+          value: "{{ .Values.mockclient.env.successRate }}"
+        - name: REQUESTS_PER_SECOND
+          value: "{{ .Values.mockclient.env.requestsPerSecond }}"
+        - name: VARIANCE
+          value: "{{ .Values.mockclient.env.variance }}"
+        - name: SUCCESS_ENDPOINT
+          value: "/success"
+        - name: FAIL_ENDPOINT
+          value: "/fail"
+        - name: DAY_LOAD_FACTOR
+          value: "{{ .Values.mockclient.env.dayLoadFactor }}"
+        - name: WEEK_LOAD_FACTOR
+          value: "{{ .Values.mockclient.env.weekLoadFactor }}"

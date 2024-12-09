@@ -15,31 +15,14 @@ spec:
       labels:
         app: mockclient
     spec:
-      dnsPolicy: ClusterFirst
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: kubernetes.io/arch
-                operator: In
-                values:
-                - amd64
-      {{- with .Values.mockclient.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.mockclient.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       containers:
       - name: mockclient
         image: "{{ .Values.mockclient.image.repository }}:{{ .Values.mockclient.image.tag }}"
         imagePullPolicy: Always
         command:
           - "python"
-          - "load_tester.py"
+          - "-m"
+          - "load_tester"
           - "--base-url"
           - "http://mockapi:{{ .Values.mockapi.service.port }}"
           - "--success-rate"
@@ -48,26 +31,10 @@ spec:
           - "{{ .Values.mockclient.env.requestsPerSecond }}"
           - "--variance"
           - "{{ .Values.mockclient.env.variance }}"
-          - "--success-endpoint"
-          - "/success"
-          - "--fail-endpoint"
-          - "/fail"
         resources:
-          {{- toYaml .Values.mockclient.resources | nindent 10 }}
-        env:
-        - name: BASE_URL
-          value: "http://mockapi:{{ .Values.mockapi.service.port }}"
-        - name: SUCCESS_RATE
-          value: "{{ .Values.mockclient.env.successRate }}"
-        - name: REQUESTS_PER_SECOND
-          value: "{{ .Values.mockclient.env.requestsPerSecond }}"
-        - name: VARIANCE
-          value: "{{ .Values.mockclient.env.variance }}"
-        - name: SUCCESS_ENDPOINT
-          value: "/success"
-        - name: FAIL_ENDPOINT
-          value: "/fail"
-        - name: DAY_LOAD_FACTOR
-          value: "{{ .Values.mockclient.env.dayLoadFactor }}"
-        - name: WEEK_LOAD_FACTOR
-          value: "{{ .Values.mockclient.env.weekLoadFactor }}"
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 128Mi

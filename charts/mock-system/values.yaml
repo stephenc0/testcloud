@@ -3,7 +3,7 @@ namespace: mockapp
 mockapi:
   image:
     repository: stephencarnold/testcloudapi
-    tag: latest-amd64
+    tag: latest
   replicas: 2
   resources:
     requests:

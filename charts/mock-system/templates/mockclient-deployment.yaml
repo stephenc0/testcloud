@@ -21,8 +21,7 @@ spec:
         imagePullPolicy: Always
         command:
           - "python"
-          - "-m"
-          - "load_tester"
+          - "load_tester.py"
           - "--base-url"
           - "http://mockapi:{{ .Values.mockapi.service.port }}"
           - "--success-rate"

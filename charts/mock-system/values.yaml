@@ -32,7 +32,8 @@ mockclient:
     limits:
       cpu: 500m
       memory: 256Mi
-  nodeSelector: {}
+  nodeSelector:
+    kubernetes.io/arch: amd64
   tolerations: []
 
   env:

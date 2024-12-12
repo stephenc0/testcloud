@@ -37,7 +37,7 @@ mockclient:
 
   env:
     successRate: "95"
-    requestsPerSecond: "100"
+    requestsPerSecond: "10"
     variance: "0.5"
     dayLoadFactor: "0.8"
     weekLoadFactor: "0"

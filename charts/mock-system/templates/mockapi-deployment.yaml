@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mockapi
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.namespace }}
   labels:
     {{- include "mock-system.labels" . | nindent 4 }}
 spec:

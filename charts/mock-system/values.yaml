@@ -2,7 +2,7 @@ namespace: mockapp
 
 mockapi:
   image:
-    repository: stephencarnold/testapi
+    repository: stephencarnold/testcloudapi
     tag: latest
   replicas: 2
   resources:
@@ -22,7 +22,7 @@ mockapi:
 
 mockclient:
   image:
-    repository: stephencarnold/testclient
+    repository: stephencarnold/testcloudclient
     tag: latest
   replicas: 2
   resources:
@@ -32,7 +32,8 @@ mockclient:
     limits:
       cpu: 500m
       memory: 256Mi
-  nodeSelector: {}
+  nodeSelector:
+    kubernetes.io/arch: amd64
   tolerations: []
 
   env:
